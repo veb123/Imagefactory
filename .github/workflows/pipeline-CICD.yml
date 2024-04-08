@@ -23,6 +23,11 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          environment: azurecloud
+          allow-no-subscriptions: false
+          audience: api://AzureADTokenExchange
+          auth-type: servicePrincipal
+        
 
       - name: Run Azure CLI Script
         uses: azure/CLI@v1
