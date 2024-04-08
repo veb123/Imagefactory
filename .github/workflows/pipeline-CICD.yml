@@ -40,14 +40,55 @@ jobs:
       - name: Packer Init
         run: packer init .       
 
-      - name: Run Packer to create Azure Linux image
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        run: |
-          packer build -var 'client_id=$ARM_CLIENT_ID' -var 'client_secret=$ARM_CLIENT_SECRET' -var 'subscription_id=$ARM_SUBSCRIPTION_ID' -var 'tenant_id=$ARM_TENANT_ID' Azure-Linux-pkr.hcl
+name: Build Azure Linux Image with Packer
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Azure CLI
+      uses: azure/CLI@v1
+
+    - name: Run Packer to create Azure Linux image
+      run: |
+        packer build \
+          -var "client_id=${ARM_CLIENT_ID}" \
+          -var "client_secret=${ARM_CLIENT_SECRET}" \
+          -var "subscription_id=${ARM_SUBSCRIPTION_ID}" \
+          -var "tenant_id=${ARM_TENANT_ID}" \
+          path/to/your/packer-template.json
+          name: Build Azure Linux Image with Packer
+          
+    - name: Checkout code
+      uses: actions/checkout@v2
+          
+    - name: Set up Azure CLI
+      uses: azure/CLI@v1
+          
+    - name: Run Packer to create Azure Linux image
+      run: |
+        packer build \
+        -var "client_id=${ARM_CLIENT_ID}" \
+        -var "client_secret=${ARM_CLIENT_SECRET}" \
+        -var "subscription_id=${ARM_SUBSCRIPTION_ID}" \
+        -var "tenant_id=${ARM_TENANT_ID}" \
+        path/to/your/packer-template.json
+          
 
       # Runs a set of commands using the runners shell
       # - name: Packer Build - Branches
