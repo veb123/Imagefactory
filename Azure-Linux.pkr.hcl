@@ -11,10 +11,10 @@ packer {
   }
 }
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
-variable "client_id"
-variable "client_secret"
-variable "subscription_id"
-variable "tenant_id"
+variable "client_id" {}
+variable "client_secret"{}
+variable "subscription_id"{}
+variable "tenant_id"{}
 
 variable "location" {
   default = "East US"
