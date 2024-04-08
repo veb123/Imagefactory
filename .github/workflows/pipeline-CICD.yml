@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_CLIENT_ID: 7d744bdf-a99f-4a3b-8e58-297d045c8656
+      ARM_CLIENT_SECRET: 4895999f-b4c0-4176-96b2-837ab5353feb
+      ARM_SUBSCRIPTION_ID: 8d7d09a4-964e-4399-8282-3451df8712cb
+      ARM_TENANT_ID: d9890fe8-1294-4850-8f9f-5d5b972d4346
 
     steps:
     - name: Checkout code
