@@ -58,5 +58,5 @@ jobs:
         if: "startsWith(github.ref, 'refs/heads/')"
         run: |
           export ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3  # Path to Python interpreter
-          packer build -only=learn-packer-windows3.amazon-ebs.winrm-example aws-win-ubuntu.pkr.hcl
+          packer build  Azure-Linux-pkr.hcl
  
