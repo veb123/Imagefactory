@@ -8,16 +8,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: 7d744bdf-a99f-4a3b-8e58-297d045c8656
+      ARM_CLIENT_SECRET: 4895999f-b4c0-4176-96b2-837ab5353feb
+      ARM_SUBSCRIPTION_ID: 8d7d09a4-964e-4399-8282-3451df8712cb
+      ARM_TENANT_ID: d9890fe8-1294-4850-8f9f-5d5b972d4346
+   
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Run a one-line script
-      run: echo Hello, world!
-
-    - name: Packer Init
-      run: packer init .
+    - name: Set up Azure CLI
+      uses: azure/CLI@v1
 
     - name: Run Packer to create Azure Linux image
       run: |
-        packer build  Azure-Linux-pkr.hcl
+        packer build \
+          -var "client_id=${ARM_CLIENT_ID}" \
+          -var "client_secret=${ARM_CLIENT_SECRET}" \
+          -var "subscription_id=${ARM_SUBSCRIPTION_ID}" \
+          -var "tenant_id=${ARM_TENANT_ID}" \
+          Azure-Win.pkr.hcl
