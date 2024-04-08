@@ -10,14 +10,16 @@ packer {
     }
   }
 }
+
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
+
 variable "client_id" {}
-variable "client_secret"{}
-variable "subscription_id"{}
-variable "tenant_id"{}
+variable "client_secret" {}
+variable "subscription_id" {}
+variable "tenant_id" {}
 
 variable "location" {
-  default = "East US"
+  default = "Southeast Asia"
 }
 
 variable "resource_group_name" {
@@ -49,14 +51,14 @@ variable "ssh_password" {
 }
 
 provider "azurerm" {
-  version = "=2.41.0"
+  version = "2.41.0"
 }
 
 source "azure-arm" "ubuntu" {
-  client_id       = 7d744bdf-a99f-4a3b-8e58-297d045c8656
-  client_secret   = 4895999f-b4c0-4176-96b2-837ab5353feb
-  subscription_id = 8d7d09a4-964e-4399-8282-3451df8712cb
-  tenant_id       = d9890fe8-1294-4850-8f9f-5d5b972d4346
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  subscription_id = var.subscription_id
+  tenant_id       = var.tenant_id
 
   image_publisher = var.image_publisher
   image_offer     = var.image_offer
