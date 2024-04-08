@@ -41,11 +41,11 @@ variable "image_sku" {
 }
 
 variable "ssh_username" {
-  default = "packer"
+  default = "root"
 }
 
 variable "ssh_password" {
-  default = "P@ssw0rd123!"
+  default = ""
 }
 
 provider "azurerm" {

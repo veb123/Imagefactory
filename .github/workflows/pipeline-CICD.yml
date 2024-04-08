@@ -24,39 +24,34 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Install Packer
-        run: |
-          wget https://releases.hashicorp.com/packer/1.7.6/packer_1.7.6_linux_amd64.zip
-          unzip packer_1.7.6_linux_amd64.zip
-          sudo mv packer /usr/local/bin/
  
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      
-      - name: Install pywinrm
-        run: python -m pip install pywinrm
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 'latest'
+      
       - name: Packer Init
-        run: packer init .
+        run: packer init .       
+
+      # - name: Run Packer to create Azure Linux image
+      #   env:
+      #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      #   run: |
+      #     packer build -var 'client_id=$ARM_CLIENT_ID' -var 'client_secret=$ARM_CLIENT_SECRET' -var 'subscription_id=$ARM_SUBSCRIPTION_ID' -var 'tenant_id=$ARM_TENANT_ID' path/to/your/packer-template.json
 
       # Runs a set of commands using the runners shell
       - name: Packer Build - Branches
         if: "startsWith(github.ref, 'refs/heads/')"
         run: |
-          export ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3  # Path to Python interpreter
-          packer build  Azure-Linux-pkr.hcl
+           packer build  Azure-Linux-pkr.hcl
  
