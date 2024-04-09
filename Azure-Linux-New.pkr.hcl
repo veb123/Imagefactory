@@ -1,6 +1,16 @@
+packer {
+  required_version = ">=1.7.7"
+  required_plugins {
+    azure = {
+      version = ">= 1.4.2"
+      source  = "github.com/hashicorp/azure"
+    }
+  }
+}
+
 variable "resource_group_name" {
   description = "The name of the resource group to create the image in."
-  default     = "packerresoucegrp"
+  default     = "packerresourcegrp"
 }
 
 variable "vm_size" {
@@ -29,14 +39,6 @@ variable "az_regions" {
   default     = ["centralindia"]
 }
 
-data "hcp-packer-image" "ubuntu22-nginx" {
-  labels = {
-    os_type = "Linux"
-    name    = "ubuntu22"
-    type    = "nginx"
-  }
-}
-
 locals {
   timestamp = timestamp()
 }
@@ -57,5 +59,57 @@ source "azure-arm" "ubuntu22" {
   azure_tags = {
     project    = "ImageFactory-Corteva"
     build-time = local.timestamp
+  }
+}
+
+locals {
+  execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+  timestamp       = regex_replace(timestamp(), "[- TZ:]", "")
+}
+
+build {
+  hcp_packer_registry {
+    bucket_name = "Packer-Azure-Image"
+    description = "Ubuntu 22_04-lts image."
+    bucket_labels = {
+      "owner"          = "VenkatramanB"
+      "department"     = "Personal"
+      "os"             = "Ubuntu"
+      "ubuntu-version" = "22_04-lts"
+      "app"            = "nginx"
+    }
+    build_labels = {
+      "build-time" = local.timestamp
+    }
+  }
+
+  name = "Packer-Azurelinux-build"
+  sources = [
+    "source.azure-arm.ubuntu22"
+  ]
+
+  # cloud-init to complete
+  provisioner "shell" {
+    inline = ["echo 'Wait for cloud-init...' && /usr/bin/cloud-init status --wait"]
+  }
+
+  provisioner "ansible" {
+    playbook_file = "Ansible/playbooks/Linux-playbook.yml"
+  }
+
+  provisioner "shell" {
+    execute_command = local.execute_command
+    inline = [
+      "echo Installing nginx",
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install nginx -y",
+      "sudo systemctl enable nginx",
+      "sudo systemctl start nginx",
+      "echo 'Adding firewall rule...'",
+      "sudo ufw allow proto tcp from any to any port 22,80,443",
+      "echo 'y' | sudo ufw enable",
+      "echo \"Variable value is $TEMP\" > demo.txt"
+    ]
   }
 }
