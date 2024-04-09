@@ -39,14 +39,6 @@ variable "az_regions" {
   default     = ["centralindia"]
 }
 
-data "hcp-packer-image" "ubuntu22-nginx" {
-  labels = {
-    os_type = "Linux"
-    name    = "ubuntu22"
-    type    = "nginx"
-  }
-}
-
 locals {
   timestamp = timestamp()
 }
