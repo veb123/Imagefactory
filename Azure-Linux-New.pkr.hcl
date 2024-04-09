@@ -73,30 +73,11 @@ locals {
 }
 
 build {
-  hcp_packer_registry {
-    bucket_name = "Packer-Azure-Image"
-    description = "Ubuntu 22_04-lts image."
-    bucket_labels = {
-      "owner"          = "VenkatramanB"
-      "department"     = "Personal"
-      "os"             = "Ubuntu"
-      "ubuntu-version" = "22_04-lts"
-      "app"            = "nginx"
-    }
-    build_labels = {
-      "build-time" = local.timestamp
-    }
-  }
 
   name = "Packer-Azurelinux-build"
   sources = [
     "source.azure-arm.ubuntu22"
   ]
-
-  # cloud-init to complete
-  provisioner "shell" {
-    inline = ["echo 'Wait for cloud-init...' && /usr/bin/cloud-init status --wait"]
-  }
 
   provisioner "ansible" {
     playbook_file = "Ansible/Linux-playbook.yml"
