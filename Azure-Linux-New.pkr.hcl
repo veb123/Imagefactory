@@ -39,6 +39,14 @@ variable "az_regions" {
   default     = ["centralindia"]
 }
 
+data "hcp-packer-image" "ubuntu22-nginx" {
+  labels = {
+    os_type = "Linux"
+    name    = "ubuntu22"
+    type    = "nginx"
+  }
+}
+
 locals {
   timestamp = timestamp()
 }
@@ -60,7 +68,12 @@ source "azure-arm" "ubuntu22" {
     project    = "ImageFactory-Corteva"
     build-time = local.timestamp
   }
+
+  image_publisher = "Canonical"
+  image_offer     = "UbuntuServer"
+  image_sku       = "18.04-LTS"
 }
+
 
 locals {
   execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
