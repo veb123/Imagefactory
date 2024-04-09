@@ -99,7 +99,7 @@ build {
   }
 
   provisioner "ansible" {
-    playbook_file = "Ansible/playbooks/Linux-playbook.yml"
+    playbook_file = "Ansible/Linux-playbook.yml"
   }
 
   provisioner "shell" {
