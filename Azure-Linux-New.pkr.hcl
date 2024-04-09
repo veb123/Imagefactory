@@ -49,7 +49,7 @@ source "azure-arm" "ubuntu22" {
   vm_size                   = var.vm_size
 
   client_id       = "7d744bdf-a99f-4a3b-8e58-297d045c8656"
-  client_secret   = "4895999f-b4c0-4176-96b2-837ab5353feb"
+  client_secret   = "Qm28Q~BXjGuTdTzjQ3ymEPqn_mAcuve8FltoraOC"
   subscription_id = "8d7d09a4-964e-4399-8282-3451df8712cb"
   tenant_id       = "d9890fe8-1294-4850-8f9f-5d5b972d4346"
 
