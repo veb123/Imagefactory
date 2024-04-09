@@ -48,8 +48,8 @@ source "azure-arm" "ubuntu22" {
   build_resource_group_name = var.resource_group_name
   vm_size                   = var.vm_size
 
-  client_id       = "7d744bdf-a99f-4a3b-8e58-297d045c8656"
-  client_secret   = "Qm28Q~BXjGuTdTzjQ3ymEPqn_mAcuve8FltoraOC"
+  client_id       = "6e48d520-1caf-44aa-90cc-4d6490cc95b3"
+  client_secret   = "HfB8Q~nlJwALsqMnnrWbC~Kg41i1DdDo6sTkjcAX"
   subscription_id = "8d7d09a4-964e-4399-8282-3451df8712cb"
   tenant_id       = "d9890fe8-1294-4850-8f9f-5d5b972d4346"
 
