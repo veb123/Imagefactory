@@ -10,7 +10,7 @@ packer {
 
 variable "resource_group_name" {
   description = "The name of the resource group to create the image in."
-  default     = "packerresourcegrp"
+  default     = "packerresoucegrp"
 }
 
 variable "vm_size" {
